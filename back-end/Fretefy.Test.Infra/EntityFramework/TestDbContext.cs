@@ -13,7 +13,7 @@ namespace Fretefy.Test.Infra.EntityFramework
         public TestDbContext(DbContextOptions<TestDbContext> options)
             : base(options)
         {
-            
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,6 +24,8 @@ namespace Fretefy.Test.Infra.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new CidadeMap());
+            modelBuilder.ApplyConfiguration(new RegiaoMap());
+            modelBuilder.ApplyConfiguration(new RegiaoCidadeMap());
         }
     }
 }

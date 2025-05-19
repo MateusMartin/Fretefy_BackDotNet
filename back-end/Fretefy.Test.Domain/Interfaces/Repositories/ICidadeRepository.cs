@@ -1,6 +1,7 @@
 ﻿using Fretefy.Test.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fretefy.Test.Domain.Interfaces.Repositories
 {
@@ -9,5 +10,6 @@ namespace Fretefy.Test.Domain.Interfaces.Repositories
         IQueryable<Cidade> List();
         IEnumerable<Cidade> ListByUf(string uf);
         IEnumerable<Cidade> Query(string terms);
+        Task CreateRangeAsync(IEnumerable<Cidade> cidades);
     }
 }
