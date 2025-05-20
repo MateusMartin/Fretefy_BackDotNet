@@ -6,10 +6,12 @@
 
         <!-- Nome da Região -->
         <div class="linha-nome-regiao">
-                <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome:</label>
-                <input id="nome" type="text" pInputText [(ngModel)]="regiao.nome"        
-                class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <div class="nome-regiao">
+                    <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome:</label>
+                    <input id="nome" type="text" pInputText [(ngModel)]="regiao.nome"         class="input-nome" />
+                  </div>
         </div>
+
 
 
         <div class="linha-cidade-uf-botao mb-12 flex justify-between items-end gap-4 flex-wrap"
