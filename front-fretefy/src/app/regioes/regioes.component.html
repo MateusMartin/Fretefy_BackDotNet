@@ -1,0 +1,92 @@
+<h2 class="mb-3">Regiões</h2>
+
+<div class="card">
+    <div class="filtros-acoes">
+            <div class="esquerda">
+                    <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" pInputText [(ngModel)]="filtroNome" (input)="filtrarRegioes()"          
+                          placeholder="Filtrar por nome da região" />
+                        </span>
+
+                    <p-checkbox inputId="inativas" [(ngModel)]="exibirInativas" (onChange)="filtrarRegioes()"
+                [binary]="true"             label="Exibir inativas"></p-checkbox>
+                </div>
+
+            <div class="direita">
+                    <button pButton type="button" label="Nova Região" icon="pi pi-plus" class="p-button-success"        
+                    (click)="criarNovaRegiao()">
+                        </button>
+                </div>
+    </div>
+
+
+
+    <p-table [value]="regioesFiltradas" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+        responsiveLayout="scroll" class="p-datatable-sm">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Nome da Região</th>
+                <th>Ativa</th>
+                <th>Ações</th> <!-- Coluna nova -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-regiao>
+            <tr>
+                <td>{{ regiao.id }}</td>
+                <td>{{ regiao.nome }}</td>
+                <td>
+                    <span class="p-tag" [ngClass]="regiao.ativa ? 'p-tag-success' : 'p-tag-secondary'">
+                        {{ regiao.ativa ? 'Sim' : 'Não' }}
+                    </span>
+                </td>
+                <td>
+                    <!-- Ver detalhes -->
+                    <button pButton type="button" icon="pi pi-eye"
+                        class="p-button-rounded p-button-outlined p-button-lg p-mr-2" (click)="verCidades(regiao.id)"
+                        title="Ver verCidades"></button>
+
+                    <!-- Editar -->
+                    <button pButton type="button" icon="pi pi-pencil"
+                        class="p-button-rounded p-button-outlined p-button-lg p-mr-2" (click)="editar(regiao.id)"
+                        title="Editar"></button>
+
+                    <!-- Inativar -->
+                    <button *ngIf="regiao.ativa" pButton type="button" label="Inativar"
+                        class="p-button-lg p-button-warning p-mr-2" (click)="inativar(regiao.id)"></button>
+
+                    <button *ngIf="!regiao.ativa" pButton type="button" label="ativar"
+                        class="p-button-sm p-button-warning p-mr-1" (click)="inativar(regiao.id)"></button>
+
+                    <!-- Deletar -->
+                    <button *ngIf="!regiao.ativa" pButton type="button" icon="pi pi-trash"
+                        class="p-button-rounded p-button-outlined p-button-danger p-button-lg"
+                        (click)="deletar(regiao.id)" title="Deletar"></button>
+                </td>
+
+        </ng-template>
+    </p-table>
+
+</div>
+
+
+<p-dialog header="Cidades da Região: {{ nomeDaRegiaoSelecionada }}" [(visible)]="modalVisivel" [modal]="true"
+    [style]="{ width: '40vw' }">
+    <p-table [value]="cidadesDaRegiao" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>UF</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cidade>
+            <tr>
+                <td>{{ cidade.id }}</td>
+                <td>{{ cidade.nome }}</td>
+                <td>{{ cidade.uf }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>

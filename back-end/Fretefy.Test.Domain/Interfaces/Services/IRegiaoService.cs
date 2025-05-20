@@ -8,9 +8,16 @@ namespace Fretefy.Test.Domain.Interfaces
     public interface IRegiaoService
     {
         IEnumerable<Regiao> List();
-        IEnumerable<Regiao> Query(string terms);
+
+        Regiao buscaByID(Guid id);
+
         (bool, string) insertRegiao(string regiao);
 
         bool exissteNome(string nome);
+
+        bool alteraRegiao(Guid id, string nome);
+
+        bool deletarRegiao(Guid id);
+
     }
 }

@@ -24,6 +24,18 @@ namespace Fretefy.Test.WebApi
                 options.UseSqlite("Data Source=Data\\Test.db");
             });
 
+            services.AddCors(options =>
+             {
+                 options.AddPolicy("AllowAngularApp",
+                     builder =>
+                     {
+                         builder.WithOrigins("http://localhost:4200") // URL do seu frontend Angular
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                     });
+             });
+
+
 
             ConfigureInfraService(services);
             ConfigureDomainService(services);
@@ -55,7 +67,7 @@ namespace Fretefy.Test.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowAngularApp");
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

@@ -19,5 +19,7 @@ namespace Fretefy.Test.Domain.Entities
 
         public string Nome { get; set; }
 
+        public bool? Ativa { get; set; }
+
     }
 }

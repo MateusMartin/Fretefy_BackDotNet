@@ -23,9 +23,9 @@ namespace Fretefy.Test.Domain.Services
 
         }
 
-        public RegiaoCidade Get(Guid id)
+        public bool alterarRegiaocidade(List<Guid> cidades, Guid regiao)
         {
-            throw new NotImplementedException();
+            return _regiaoCidadeRepository.alterarRegiaocidade(cidades, regiao);
         }
 
         public bool insertRegiaoCidade(List<Guid> cidades, string regiao)
@@ -33,16 +33,11 @@ namespace Fretefy.Test.Domain.Services
             return _regiaoCidadeRepository.insertRegiaoCidade(cidades, regiao);
         }
 
-        public IEnumerable<RegiaoCidade> List()
+        public List<RegiaoCidade> listByRegiaoId(Guid regiaoId)
         {
-            throw new NotImplementedException();
+            return _regiaoCidadeRepository.List()
+                    .Where(x => x.RegiaoID.Equals(regiaoId))
+                    .ToList();
         }
-
-        public IEnumerable<RegiaoCidade> Query(string terms)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

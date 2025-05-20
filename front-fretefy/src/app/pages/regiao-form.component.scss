@@ -1,0 +1,75 @@
+h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #000000;
+    margin-bottom: 1rem;
+}
+
+/* Deixa a tabela com bordas sólidas e sem cantos arredondados */
+:host ::ng-deep .p-datatable table {
+    border-collapse: collapse !important;
+    border: 1px solid #34495e !important;
+    /* borda externa */
+    border-radius: 0 !important;
+    /* remove cantos arredondados */
+}
+
+/* Bordas internas das células */
+:host ::ng-deep .p-datatable th,
+:host ::ng-deep .p-datatable td {
+    border: 1px solid #34495e !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0 !important;
+}
+
+:host ::ng-deep .p-datatable button {
+    margin-left: 2px;
+    border-radius: 10px;
+}
+
+/* Hover para as linhas */
+:host ::ng-deep .p-datatable tbody tr:hover {
+    background-color: #ecf0f1 !important;
+}
+
+/* Estilo para o título h2 */
+:host ::ng-deep h2.mb-3 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1.2px;
+}
+
+.linha-cidade-uf-botao {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    /* equivalente a gap-4 */
+    margin-bottom: 3rem;
+    /* equivalente a mb-12 */
+}
+
+.linha-cidade-uf-botao .esquerda {
+    display: flex;
+    flex-grow: 1;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.linha-cidade-uf-botao .direita {
+    width: 20rem;
+    /* equivalente a w-48 */
+}
+
+.linha-nome-regiao {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    /* equivalente a mb-6 */
+}

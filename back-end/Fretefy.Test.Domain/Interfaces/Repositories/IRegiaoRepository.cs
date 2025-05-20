@@ -9,9 +9,12 @@ namespace Fretefy.Test.Domain.Interfaces.Repositories
     public interface IRegiaoRepository
     {
         IQueryable<Regiao> List();
-        IEnumerable<Regiao> Query(string terms);
         bool exissteNome(string nome);
         (bool, string) insertRegiao(string nome);
+
+        bool alteraRegiao(Guid id, string nome);
+
+        bool deletarRegiao(Guid id);
 
     }
 }

@@ -22,6 +22,21 @@ namespace Fretefy.Test.Domain.Services
 
         }
 
+        public bool alteraRegiao(Guid id, string nome)
+        {
+            return _regiaoRepository.alteraRegiao(id, nome);
+        }
+
+        public Regiao buscaByID(Guid id)
+        {
+            return _regiaoRepository.List().FirstOrDefault(x => x.Id == id);
+        }
+
+        public bool deletarRegiao(Guid id)
+        {
+            return _regiaoRepository.deletarRegiao(id);
+        }
+
         public bool exissteNome(string nome)
         {
             return _regiaoRepository.exissteNome(nome);
@@ -34,17 +49,8 @@ namespace Fretefy.Test.Domain.Services
 
         public IEnumerable<Regiao> List()
         {
-            throw new NotImplementedException();
+            return _regiaoRepository.List();
         }
 
-        public IEnumerable<Regiao> ListByUf(string uf)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Regiao> Query(string terms)
-        {
-            return _regiaoRepository.Query(terms);
-        }
     }
 }

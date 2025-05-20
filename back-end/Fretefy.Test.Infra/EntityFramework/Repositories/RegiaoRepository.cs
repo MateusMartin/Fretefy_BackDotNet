@@ -1,6 +1,7 @@
 using Fretefy.Test.Domain.Entities;
 using Fretefy.Test.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,16 +21,9 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
 
         public IQueryable<Regiao> List()
         {
-            throw new System.NotImplementedException();
+            return _dbSet.AsQueryable();
         }
 
-
-
-
-        public IEnumerable<Regiao> Query(string terms)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public bool exissteNome(string nome)
         {
@@ -51,6 +45,33 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
             _dbContext.SaveChanges();
 
             return (true, novaRegiao.Id.ToString());
+        }
+
+        public bool alteraRegiao(Guid id, string nome)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+                return false;
+
+            var regiao = _dbSet.FirstOrDefault(r => r.Id == id);
+            if (regiao == null)
+                return false;
+
+            regiao.Nome = nome;
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool deletarRegiao(Guid id)
+        {
+            var regiao = _dbSet.FirstOrDefault(r => r.Id == id);
+            if (regiao == null)
+                return false;
+
+            regiao.Ativa = false;
+            _dbContext.SaveChanges();
+
+            return true;
         }
     }
 

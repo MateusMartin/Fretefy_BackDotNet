@@ -7,10 +7,12 @@ namespace Fretefy.Test.Domain.Interfaces
 {
     public interface IRegiaoCidadeService
     {
-        RegiaoCidade Get(Guid id);
-        IEnumerable<RegiaoCidade> List();
-        IEnumerable<RegiaoCidade> Query(string terms);
 
         bool insertRegiaoCidade(List<Guid> cidades, string regiao);
+
+        bool alterarRegiaocidade(List<Guid> cidades, Guid regiao);
+
+        List<RegiaoCidade> listByRegiaoId(Guid regiaoId);
+
     }
 }
