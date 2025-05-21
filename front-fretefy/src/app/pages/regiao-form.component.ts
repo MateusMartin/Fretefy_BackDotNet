@@ -147,7 +147,11 @@ export class RegiaoFormComponent implements OnInit {
           summary: 'Sucesso',
           detail: 'Região inserida com sucesso!',
           life: 1000
-        });
+        })
+        setTimeout(() => {
+          this.router.navigateByUrl('/');
+        }, 1000);
+        ;
       },
       error: (err) => {
         this.messageService.add({
@@ -179,6 +183,9 @@ export class RegiaoFormComponent implements OnInit {
           detail: 'Região atualizada com sucesso!',
           life: 1000
         });
+        setTimeout(() => {
+          this.router.navigateByUrl('/');
+        }, 1000);
       },
       error: (err) => {
         this.messageService.add({
@@ -190,18 +197,6 @@ export class RegiaoFormComponent implements OnInit {
       }
     });
   }
-
-
-
-  aoFecharToast() {
-    console.log('fechou')
-    if (this.toastSucessoAtivo) {
-      this.toastSucessoAtivo = false;
-      this.router.navigate(['']);
-    }
-  }
-
-
 
 
 

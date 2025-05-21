@@ -309,6 +309,7 @@ namespace Fretefy.Test.WebApi.Controllers
             worksheet.Cell(1, 3).Value = "Cidade Id";
             worksheet.Cell(1, 4).Value = "Cidade Nome";
             worksheet.Cell(1, 5).Value = "Cidade UF";
+            worksheet.Cell(1, 6).Value = "Região Ativa";
 
             int currentRow = 2;
 
@@ -329,6 +330,7 @@ namespace Fretefy.Test.WebApi.Controllers
                         worksheet.Cell(currentRow, 3).Value = cidade.Id.ToString();
                         worksheet.Cell(currentRow, 4).Value = cidade.Nome;
                         worksheet.Cell(currentRow, 5).Value = cidade.UF;
+                        worksheet.Cell(currentRow, 6).Value = regiao.Ativa ?? false ? "Sim" : "Não";
                         currentRow++;
                     }
                 }
@@ -339,6 +341,7 @@ namespace Fretefy.Test.WebApi.Controllers
                     worksheet.Cell(currentRow, 3).Value = "";
                     worksheet.Cell(currentRow, 4).Value = "";
                     worksheet.Cell(currentRow, 5).Value = "";
+                    worksheet.Cell(currentRow, 6).Value = regiao.Ativa ?? false ? "Sim" : "Não";
                     currentRow++;
                 }
             }
