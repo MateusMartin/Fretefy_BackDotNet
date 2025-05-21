@@ -8,8 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';  // Import MessageService
-import { ToastModule } from 'primeng/toast';    // Import ToastModule for toast UI
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 
 @Component({
   selector: 'app-regioes',
@@ -23,9 +26,10 @@ import { ToastModule } from 'primeng/toast';    // Import ToastModule for toast 
       FormsModule,
       ButtonModule,
       DialogModule,
-      ToastModule // Adiciona ToastModule aqui
+      ToastModule,
+      ConfirmDialogModule
     ],
-  providers: [MessageService], // Providencia o MessageService
+  providers: [MessageService, ConfirmationService], // Providencia o MessageService
   templateUrl: './regioes.component.html',
   styleUrl: './regioes.component.scss'
 })
@@ -41,7 +45,8 @@ export class RegioesComponent implements OnInit {
   constructor(
     private regiaoService: RegiaoService,
     private router: Router,
-    private messageService: MessageService // Injetar MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -83,6 +88,23 @@ export class RegioesComponent implements OnInit {
   }
 
 
+  confirmarDownloadExcel(): void {
+    this.confirmationService.confirm({
+      message: 'Deseja incluir as regiões inativas no Excel?',
+      header: 'Exportar Regiões',
+      icon: 'pi pi-question-circle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.regiaoService.baixarExcel("", true);
+      },
+      reject: () => {
+        this.regiaoService.baixarExcel("", false);
+      }
+    });
+  }
+
+
 
   inativar(id: number) {
     const idStr = id.toString();
@@ -107,6 +129,30 @@ export class RegioesComponent implements OnInit {
     });
   }
 
+
+
+  ativar(id: number) {
+    const idStr = id.toString();
+    this.regiaoService.ativarRegiao(idStr).subscribe({
+      next: () => {
+        this.carregarRegioes();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Região ativada com sucesso!',
+          life: 2000
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err?.error?.message || 'Falha ao ativada região',
+          life: 3000
+        });
+      }
+    });
+  }
 
 
 

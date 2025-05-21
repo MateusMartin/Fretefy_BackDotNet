@@ -2,22 +2,27 @@
 
 <div class="card">
     <div class="filtros-acoes">
-            <div class="esquerda">
-                    <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input type="text" pInputText [(ngModel)]="filtroNome" (input)="filtrarRegioes()"          
-                          placeholder="Filtrar por nome da região" />
-                        </span>
+        <div class="esquerda">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input type="text" pInputText [(ngModel)]="filtroNome" (input)="filtrarRegioes()"
+                    placeholder="Filtrar por nome da região" />
+            </span>
 
-                    <p-checkbox inputId="inativas" [(ngModel)]="exibirInativas" (onChange)="filtrarRegioes()"
-                [binary]="true"             label="Exibir inativas"></p-checkbox>
-                </div>
+            <p-checkbox inputId="inativas" [(ngModel)]="exibirInativas" (onChange)="filtrarRegioes()" [binary]="true"
+                label="Exibir inativas"></p-checkbox>
+        </div>
 
-            <div class="direita">
-                    <button pButton type="button" label="Nova Região" icon="pi pi-plus" class="p-button-success"        
-                    (click)="criarNovaRegiao()">
-                        </button>
-                </div>
+        <div class="direita">
+            <button pButton type="button" label="Nova Região" icon="pi pi-plus" class="p-button-success"
+                (click)="criarNovaRegiao()">
+            </button>
+
+            <button pButton type="button" label="Baixar Excel Regiões" icon="pi pi-file-excel"
+                class="p-button-secondary ml-2" (click)="confirmarDownloadExcel()">
+            </button>
+
+        </div>
     </div>
 
 
@@ -54,10 +59,10 @@
 
                     <!-- Inativar -->
                     <button *ngIf="regiao.ativa" pButton type="button" label="Inativar"
-                        class="p-button-lg p-button-warning p-mr-2" (click)="inativar(regiao.id)"></button>
+                        class="p-button-sm p-button-warning p-mr-1" (click)="inativar(regiao.id)"></button>
 
                     <button *ngIf="!regiao.ativa" pButton type="button" label="ativar"
-                        class="p-button-sm p-button-warning p-mr-1" (click)="inativar(regiao.id)"></button>
+                        class="p-button-sm p-button-warning p-mr-1" (click)="ativar(regiao.id)"></button>
 
                     <!-- Deletar -->
                     <button *ngIf="!regiao.ativa" pButton type="button" icon="pi pi-trash"
@@ -92,3 +97,4 @@
 </p-dialog>
 
 <p-toast #toast position="top-center"></p-toast>
+<p-confirmDialog></p-confirmDialog>

@@ -27,6 +27,12 @@ namespace Fretefy.Test.Domain.Services
             return _regiaoRepository.alteraRegiao(id, nome);
         }
 
+        public bool ativarRegiao(Guid id)
+        {
+            return _regiaoRepository.ativarRegiao(id);
+
+        }
+
         public Regiao buscaByID(Guid id)
         {
             return _regiaoRepository.List().FirstOrDefault(x => x.Id == id);

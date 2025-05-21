@@ -86,6 +86,17 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
             return true;
         }
 
+        public bool ativarRegiao(Guid id)
+        {
+            var regiao = _dbSet.FirstOrDefault(r => r.Id == id);
+            if (regiao == null)
+                return false;
+
+            regiao.Ativa = true;
+            _dbContext.SaveChanges();
+
+            return true;
+        }
     }
 
 }

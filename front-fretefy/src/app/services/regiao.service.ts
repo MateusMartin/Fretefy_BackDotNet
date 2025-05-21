@@ -59,9 +59,36 @@ export class RegiaoService {
     }
 
 
+    ativarRegiao(regiaoId: string): Observable<any> {
+        const headers = new HttpHeaders().set('regiaoid', regiaoId);
+        console.log(regiaoId);
+        return this.http.put(this.apiUrl + 'regiao/Ativar', {}, { headers });
+    }
+
     removerRegiao(regiaoId: string): Observable<any> {
         const headers = new HttpHeaders().set('regiaoId', regiaoId);
         return this.http.delete(this.apiUrl + 'regiao/Remover', { headers });
+    }
+
+
+    baixarExcel(idRegiao?: string, incluirInativas: boolean = false): void {
+        const headers = new HttpHeaders()
+            .set('idRegiao', idRegiao || '')
+            .set('incluirInativas', incluirInativas.toString());
+
+        this.http.get(this.apiUrl + 'regiao/get-excel', {
+            headers,
+            responseType: 'blob'  // 👈 importante para arquivos
+        }).subscribe(blob => {
+            const a = document.createElement('a');
+            const objectUrl = URL.createObjectURL(blob);
+            a.href = objectUrl;
+            a.download = `regioes-${new Date().toISOString().replace(/[:.-]/g, '')}.xlsx`;
+            a.click();
+            URL.revokeObjectURL(objectUrl);
+        }, error => {
+            console.error('Erro ao baixar o Excel:', error);
+        });
     }
 
 

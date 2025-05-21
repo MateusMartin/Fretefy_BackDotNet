@@ -197,6 +197,35 @@ namespace Fretefy.Test.WebApi.Controllers
         }
 
 
+
+
+        [Route("Ativar")]
+        [HttpPut]
+        public IActionResult AtivarRegiao([FromHeader] Guid regiaoid)
+        {
+            var regiao = _regiaoService.buscaByID(regiaoid);
+            if (regiao == null)
+            {
+                return StatusCode(404, new { success = false, message = "Região não encontrada." });
+            }
+            else
+            {
+                bool deletarResult = _regiaoService.ativarRegiao(regiaoid);
+                if (deletarResult)
+                {
+
+                    return StatusCode(201, new { status = "success", message = "Região ativada com Sucesso" });
+                }
+                else
+                {
+
+                    return StatusCode(400, new { status = "error", message = "Falha ao ativar região" });
+                }
+            }
+
+        }
+
+
         [Route("Delete")]
         [HttpDelete]
         public IActionResult DeleteRegiao([FromHeader] Guid regiaoid)
@@ -217,7 +246,7 @@ namespace Fretefy.Test.WebApi.Controllers
                 else
                 {
 
-                    return StatusCode(400, new { status = "error", message = "Falha ao inativada região" });
+                    return StatusCode(400, new { status = "error", message = "Falha ao inativar região" });
                 }
             }
 
