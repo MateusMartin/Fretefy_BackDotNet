@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';  // Import MessageService
+import { ToastModule } from 'primeng/toast';    // Import ToastModule for toast UI
 
 @Component({
   selector: 'app-regioes',
@@ -20,8 +22,10 @@ import { Router } from '@angular/router';
       CheckboxModule,
       FormsModule,
       ButtonModule,
-      DialogModule
+      DialogModule,
+      ToastModule // Adiciona ToastModule aqui
     ],
+  providers: [MessageService], // Providencia o MessageService
   templateUrl: './regioes.component.html',
   styleUrl: './regioes.component.scss'
 })
@@ -34,9 +38,17 @@ export class RegioesComponent implements OnInit {
   cidadesDaRegiao: Cidade[] = [];
   nomeDaRegiaoSelecionada: string = '';
 
-  constructor(private regiaoService: RegiaoService, private router: Router) { }
+  constructor(
+    private regiaoService: RegiaoService,
+    private router: Router,
+    private messageService: MessageService // Injetar MessageService
+  ) { }
 
   ngOnInit() {
+    this.carregarRegioes();
+  }
+
+  carregarRegioes() {
     this.regiaoService.obterRegioes().subscribe({
       next: (dados) => {
         this.regioes = dados;
@@ -65,19 +77,60 @@ export class RegioesComponent implements OnInit {
       console.warn('Região não encontrada ou sem cidades:', id);
     }
   }
-  editar(id: number) {
-    console.log('Editar região', id);
-    // Implementar lógica de edição
+
+  editar(id: string) {
+    this.router.navigate(['/regioes/editar', id]);
   }
+
+
 
   inativar(id: number) {
-    console.log('Inativar região', id);
-    // Implementar a chamada para inativar a região
+    const idStr = id.toString();
+    this.regiaoService.inativarRegiao(idStr).subscribe({
+      next: () => {
+        this.carregarRegioes();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Região inativada com sucesso!',
+          life: 2000
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err?.error?.message || 'Falha ao inativar região',
+          life: 3000
+        });
+      }
+    });
   }
 
+
+
+
   deletar(id: number) {
-    console.log('Deletar região', id);
-    // Implementar a chamada para deletar a região
+    const idStr = id.toString();
+    this.regiaoService.removerRegiao(idStr).subscribe({
+      next: () => {
+        this.carregarRegioes();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Região Removida com sucesso!',
+          life: 2000
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err?.error?.message || 'Falha ao inativar região',
+          life: 3000
+        });
+      }
+    });
   }
 
   criarNovaRegiao() {

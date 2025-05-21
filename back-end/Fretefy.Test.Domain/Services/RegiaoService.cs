@@ -52,5 +52,9 @@ namespace Fretefy.Test.Domain.Services
             return _regiaoRepository.List();
         }
 
+        public bool RemoverRegiao(Guid id)
+        {
+            return _regiaoRepository.RemoverRegiao(id);
+        }
     }
 }

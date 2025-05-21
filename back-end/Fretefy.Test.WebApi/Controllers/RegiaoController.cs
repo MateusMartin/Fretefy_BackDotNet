@@ -169,6 +169,14 @@ namespace Fretefy.Test.WebApi.Controllers
             {
                 return StatusCode(404, new { success = false, message = "Região não encontrada." });
             }
+            bool nomeExiste = _regiaoService.List()
+                  .Any(r => r.Nome.Equals(regiaoRequest.nome, StringComparison.OrdinalIgnoreCase) && r.Id != regiaoRequest.id);
+
+            if (nomeExiste)
+            {
+                return StatusCode(409, new { status = "error", message = $"Já existe uma região com o nome '{regiaoRequest.nome}'." });
+            }
+
             bool alteraRegiaoResult = _regiaoService.alteraRegiao(regiaoRequest.id, regiaoRequest.nome);
             if (alteraRegiaoResult)
             {
@@ -201,6 +209,33 @@ namespace Fretefy.Test.WebApi.Controllers
             else
             {
                 bool deletarResult = _regiaoService.deletarRegiao(regiaoid);
+                if (deletarResult)
+                {
+
+                    return StatusCode(201, new { status = "success", message = "Região inativada com Sucesso" });
+                }
+                else
+                {
+
+                    return StatusCode(400, new { status = "error", message = "Falha ao inativada região" });
+                }
+            }
+
+        }
+
+
+        [Route("Remover")]
+        [HttpDelete]
+        public IActionResult Remover([FromHeader] Guid regiaoid)
+        {
+            var regiao = _regiaoService.buscaByID(regiaoid);
+            if (regiao == null)
+            {
+                return StatusCode(404, new { success = false, message = "Região não encontrada." });
+            }
+            else
+            {
+                bool deletarResult = _regiaoService.RemoverRegiao(regiaoid);
                 if (deletarResult)
                 {
 

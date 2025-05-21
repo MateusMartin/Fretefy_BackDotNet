@@ -15,6 +15,6 @@ namespace Fretefy.Test.Domain.Interfaces.Repositories
         bool alteraRegiao(Guid id, string nome);
 
         bool deletarRegiao(Guid id);
-
+        bool RemoverRegiao(Guid id);
     }
 }

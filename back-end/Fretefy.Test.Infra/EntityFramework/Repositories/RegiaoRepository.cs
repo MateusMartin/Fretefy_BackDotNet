@@ -73,6 +73,19 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
 
             return true;
         }
+
+        public bool RemoverRegiao(Guid id)
+        {
+            var regiao = _dbSet.FirstOrDefault(r => r.Id == id);
+            if (regiao == null)
+                return false;
+
+            _dbSet.Remove(regiao);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
     }
 
 }

@@ -1,84 +1,72 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="card p-6 max-w-screen-md w-full shadow-lg rounded-2xl bg-white">
-        <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">
-            {{ editando ? 'Editar Região' : 'Nova Região' }}
-        </h2>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+  <div class="card max-w-screen-md w-full shadow-lg rounded-2xl bg-white p-6">
 
-        <!-- Nome da Região -->
-        <div class="linha-nome-regiao">
-              <div class="nome-regiao">
-                    <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome:</label>
-                    <input id="nome" type="text" pInputText [(ngModel)]="regiao.nome"         class="input-nome" />
-                  </div>
+    <h2 class="mb-3">{{ editando ? 'Editar Região' : 'Nova Região' }}</h2>
+
+    <div class="form-group">
+      <!-- Linha do Nome -->
+      <div class="linha linha-nome">
+        <label for="nome" class="label-lateral">Nome:</label>
+        <input id="nome" type="text" pInputText [(ngModel)]="regiao.nome" class="input-nome" />
+      </div>
+
+      <!-- Linha Cidade, UF e Botão -->
+      <div class="linha linha-cidade-uf-botao">
+        <div class="campo cidade">
+          <label for="cidade" class="label-lateral">Cidade:</label>
+          <p-autoComplete [(ngModel)]="cidadeSelecionada" [suggestions]="cidadesFiltradas"
+            (completeMethod)="buscarCidades($event.query)" (onSelect)="aoSelecionarCidade($event.value)"
+            (onBlur)="validarCidadeDigitada()" field="nome" placeholder="Digite uma cidade a partir da 3ª letra"
+            class="input-cidade"></p-autoComplete>
         </div>
 
-
-
-        <div class="linha-cidade-uf-botao mb-12 flex justify-between items-end gap-4 flex-wrap"
-            style="margin-top: 10px;">
-              <!-- Esquerda: Cidade e UF -->
-              <div class="esquerda flex flex-grow gap-4 flex-wrap">
-                    <!-- Cidade -->
-                    <div class="min-w-[200px] flex-1">
-                          <label for="cidade" class="block text-sm font-medium text-gray-700 mb-1">Cidade:</label>
-                          <p-autoComplete [(ngModel)]="cidadeSelecionada" [suggestions]="cidadesFiltradas"        
-                        (completeMethod)="buscarCidades($event.query)" (onSelect)="aoSelecionarCidade($event.value)"    
-                            field="nome" placeholder="Digite uma cidade a partir da 3ª letra"        
-                        class="w-full border border-gray-300 rounded-md shadow-sm" />
-                        </div>
-
-                    <!-- UF -->
-                    <div class="w-24">
-                          <label for="uf" class="block text-sm font-medium text-gray-700 mb-1">UF:</label>
-                          <input id="uf" type="text" pInputText [(ngModel)]="regiaoUfSelecionado"        
-                        class="w-full p-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700" disabled />
-                          <input id="idCidade" type="text" pInputText [(ngModel)]="idSelecionado" hidden />
-                        </div>
-                  </div>
-
-              <!-- Direita: Botão Adicionar -->
-              <div class="direita w-48">
-                    <button pButton type="button" label="Adicionar Cidade" icon="pi pi-plus"      
-                    class="p-button p-button-info w-full" (click)="adicionarCidade()" [disabled]="!cidadeSelecionada">
-                        </button>
-                  </div>
+        <div class="campo uf">
+          <label for="uf" class="label-lateral">UF:</label>
+          <input id="uf" type="text" pInputText [(ngModel)]="regiaoUfSelecionado" class="input-uf" disabled />
+          <input id="idCidade" type="text" pInputText [(ngModel)]="idSelecionado" hidden />
         </div>
 
-
-
-        <!-- Tabela de Cidades -->
-        <p-table [value]="regiao.cidades" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
-            responsiveLayout="scroll" class="p-datatable-striped shadow">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>UF</th>
-                    <th style="text-align:center">Ações</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-cidade>
-                <tr>
-                    <td>{{ cidade.id }}</td>
-                    <td>{{ cidade.nome }}</td>
-                    <td>{{ cidade.uf }}</td>
-                    <td style="text-align:center">
-                        <button pButton type="button" icon="pi pi-trash"
-                            class="p-button-sm p-button-rounded p-button-danger" (click)="removerCidade(cidade)">
-                        </button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-
-
-
-        <!-- Botões de Ação -->
-        <div class="flex justify-end gap-3">
-            <button pButton type="button" label="Salvar" class="p-button-success" (click)="salvar()"></button>
-            <button pButton type="button" style="margin-left: 10px;" label="Cancelar" class="p-button-secondary"
-                (click)="cancelar()"></button>
+        <div class="campo botao-adicionar">
+          <button pButton type="button" label="Adicionar Cidade" icon="pi pi-plus" class="p-button p-button-info w-full"
+            (click)="adicionarCidade()" [disabled]="!cidadeSelecionada"></button>
         </div>
-
+      </div>
     </div>
+
+    <!-- Tabela de Cidades -->
+    <div style="margin-top: 10px;">
+      <p-table [value]="regiao.cidades" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+        responsiveLayout="scroll" class="p-datatable-striped shadow">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>UF</th>
+            <th style="text-align:center">Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-cidade>
+          <tr>
+            <td>{{ cidade.id }}</td>
+            <td>{{ cidade.nome }}</td>
+            <td>{{ cidade.uf }}</td>
+            <td style="text-align:center">
+              <button pButton type="button" icon="pi pi-trash" class="p-button-sm p-button-rounded p-button-danger"
+                (click)="removerCidade(cidade)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <!-- Botões -->
+    <div class="botoes-acao">
+
+      <button *ngIf="editando" pButton label="Salvar Alterações" (click)="atualizar()"></button>
+      <button *ngIf="!editando" pButton label="Salvar" (click)="salvar()"></button>
+
+      <button pButton type="button" label="Cancelar" class="p-button-secondary" (click)="cancelar()"></button>
+    </div>
+  </div>
 </div>
+
+<p-toast #toast position="top-center" (onClose)="aoFecharToast()"></p-toast>
