@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -16,12 +17,22 @@ namespace Fretefy.Test.WebApi
 {
     public class Startup
     {
+
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<IbgeSettings>(_configuration.GetSection("Ibge"));
             services.AddScoped<DbContext, TestDbContext>();
             services.AddDbContext<TestDbContext>((provider, options) =>
             {
-                options.UseSqlite("Data Source=Data\\Test.db");
+                var connectionString = _configuration.GetConnectionString("DefaultConnectionSqlite");
+                options.UseSqlite(connectionString);
             });
 
             services.AddCors(options =>
@@ -29,7 +40,8 @@ namespace Fretefy.Test.WebApi
                  options.AddPolicy("AllowAngularApp",
                      builder =>
                      {
-                         builder.WithOrigins("http://localhost:4200") // URL do seu frontend Angular
+                         var angularClientUrl = _configuration["Cors:AngularClient"];
+                         builder.WithOrigins(angularClientUrl) // URL do seu frontend Angular
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                      });
@@ -42,6 +54,9 @@ namespace Fretefy.Test.WebApi
 
             services.AddMvc()
                 .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
+
+
+
 
 
         }

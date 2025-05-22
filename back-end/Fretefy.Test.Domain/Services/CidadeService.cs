@@ -9,15 +9,18 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Options;
 
 namespace Fretefy.Test.Domain.Services
 {
     public class CidadeService : ICidadeService
     {
         private readonly ICidadeRepository _cidadeRepository;
-        public CidadeService(ICidadeRepository cidadeRepository)
+        private readonly IbgeSettings _ibgeSettings;
+        public CidadeService(ICidadeRepository cidadeRepository, IOptions<IbgeSettings> ibgeSettings)
         {
             _cidadeRepository = cidadeRepository;
+            _ibgeSettings = ibgeSettings.Value;
 
         }
 
@@ -46,7 +49,7 @@ namespace Fretefy.Test.Domain.Services
 
             using var httpClient = new HttpClient();
 
-            var response = await httpClient.GetAsync("https://servicodados.ibge.gov.br/api/v1/localidades/municipios");
+            var response = await httpClient.GetAsync(_ibgeSettings.UrlMunicipios);
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();

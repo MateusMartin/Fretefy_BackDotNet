@@ -12,11 +12,14 @@ namespace Fretefy.Test.WebApi
     {
         public static async Task Main(string[] args)
         {
+
             var host = CreateHostBuilder(args).Build();
 
             // Apenas devido ao uso do InMemory
             using (var scope = host.Services.CreateScope())
             {
+
+
                 var context = scope.ServiceProvider.GetRequiredService<TestDbContext>();
                 context.Database.EnsureCreated();
 
